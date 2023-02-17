@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\userController;
 use App\Http\Resources\UserResource;
+use App\Http\Controllers\indicatorsController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,7 +26,12 @@ Route::get('/usuario',function (){
 Route::post('/usuario',[userController::class,'store']);
 Route::put('/usuario/{id}', [userController::class,'update']);
 Route::delete("/usuario/{id}", [userController::class,'destroy']);
+Route::get('/indicators',[indicatorsController::class, 'getAllCountsPerUser']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+
+                               

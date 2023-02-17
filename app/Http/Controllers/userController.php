@@ -38,13 +38,14 @@ class userController extends Controller
         $validator = Validator::make($request->all(),[
             'name' => 'required|max:255',
             'email' => 'required',
+            'password' => 'required'
         ]);
 
         if($validator->fails()){
-            return json_encode(["error" => "falla"]);
+            return json_encode(["creado" => "0"]);
         }
         User::create($request->all()); 
-        return  json_encode(["creado" => "cliente creado correctamente"]);   
+        return  json_encode(["creado" => "1"]);   
     
     }
 
@@ -80,11 +81,33 @@ class userController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(),[
+            'id' => 'exists',
+            
+        ]);
+
+        if($validator->fails()){
+            return json_encode(["error" => "falla"]);
+        }
+
         if(User::where('id',$id)->exists()){
             $user = User::find($id);
             $user->name = $request->name;
             $user->email = $request->email;
+            $user->age = $request->age;
+            $user->phone = $request->phone;
             $user->password = $request->password;
+            $user->role = $request->role;
+            $user->salery = $request->salery;
+            
+            
+            if($request->password == ""){
+              $user->password = $user->password;
+              }else{
+              $user->password = $request->password;
+            
+            }
+            
             $user->save();
             return json_encode(["Actualizado" => "el usuario se ha actualizado correctamente"]);
         }else{
@@ -100,13 +123,14 @@ class userController extends Controller
      */
     public function destroy($id)
     {
+
         if(User::where('id',$id)->exists()){
             $user = User::find($id);
             $user->delete();
 
-            return json_encode(["Borrado"=>"datos borrados"]);
+            return json_encode(["Borrado"=>"1"]);
         }else{
-            return json_encode(["no borrado" => "datos no borrads"]);
+            return json_encode(["Borrado" => "0"]);
         }
     }
 }
