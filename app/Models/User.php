@@ -7,9 +7,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-
+use App\Models\roles;
+ 
 class User extends Authenticatable
 {
+
+    public function rol()
+{
+    return $this->belongsTo(roles::class, 'rol_id');
+}
+
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
@@ -21,7 +28,7 @@ class User extends Authenticatable
         'name',
         'email',
         'phone',
-        'role',
+        'rol_id',
         'age',
         'salery',   
         'password',
@@ -34,10 +41,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
+       
         'remember_token',
     ];
 
+    
     /**
      * The attributes that should be cast.
      *

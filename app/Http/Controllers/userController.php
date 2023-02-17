@@ -71,7 +71,13 @@ class userController extends Controller
     {
         //
     }
-
+    public function find(){
+        $usuarios = User::join('roles', 'users.rol_id', '=', 'roles.id')
+        ->select('users.*', 'roles.rol')
+        ->with('rol')
+        ->get();
+        return $usuarios;
+   }
     /**
      * Update the specified resource in storage.
      *
@@ -79,6 +85,7 @@ class userController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+   
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(),[
@@ -92,20 +99,22 @@ class userController extends Controller
 
         if(User::where('id',$id)->exists()){
             $user = User::find($id);
+
             $user->name = $request->name;
             $user->email = $request->email;
             $user->age = $request->age;
             $user->phone = $request->phone;
-            $user->password = $request->password;
-            $user->role = $request->role;
+            $user->rol_id = $request->rol_id;
             $user->salery = $request->salery;
-            
-            
+                
             if($request->password == ""){
               $user->password = $user->password;
-              }else{
+
+              }
+              else
+              {
               $user->password = $request->password;
-            
+
             }
             
             $user->save();
