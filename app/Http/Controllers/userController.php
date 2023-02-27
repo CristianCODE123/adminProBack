@@ -44,7 +44,9 @@ class userController extends Controller
         if($validator->fails()){
             return json_encode(["creado" => "0"]);
         }
-        User::create($request->all()); 
+        $user = new User(request()->all());
+        $user->password = bcrypt($user->password);
+        $user->save(); 
         return  json_encode(["creado" => "1"]);   
     
     }
