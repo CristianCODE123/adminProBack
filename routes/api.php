@@ -7,6 +7,8 @@ use App\Http\Controllers\rolesController;
 use App\Http\Resources\UserResource;
 use App\Http\Controllers\indicatorsController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\notificationController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -57,3 +59,11 @@ Route::group([
 });
 
                                
+//notify
+Route::group([
+    'prefix' => 'notify'
+], function ($router) {
+    Route::get('get', [notificationController::class, 'get']);
+    Route::post('add', [notificationController::class, "add"] );
+
+});
