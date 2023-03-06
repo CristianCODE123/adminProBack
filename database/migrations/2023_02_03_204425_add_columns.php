@@ -11,17 +11,17 @@ class AddColumns extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('role')->after('email')->default('active');
-            $table->string('age')->after('role')->default('0');
-        });
-        Schema::table('users', function (Blueprint $table) {
+    // public function up()
+    // {
+    //     Schema::table('users', function (Blueprint $table) {
+    //         $table->string('role')->after('email')->default('active');
+    //         $table->string('age')->after('role')->default('0');
+    //     });
+    //     Schema::table('users', function (Blueprint $table) {
         
-            $table->string('age')->after('role')->default('0');
-        });
-    }
+    //         $table->string('age')->after('role')->default('0');
+    //     });
+    // }
 
     /**
      * Reverse the migrations.

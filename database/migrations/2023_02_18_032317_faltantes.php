@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class OtherColums extends Migration
+class Faltantes extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class OtherColums extends Migration
     // public function up()
     // {
     //     Schema::table('users', function (Blueprint $table) {
-    //         $table->string('age')->after('role')->default('0');
+    //         // $table->string('age')->after('role')->default('0');
     //         $table->string('phone')->after('age')->default('0');
     //         $table->string('salery')->after('phone')->default('0');
 
