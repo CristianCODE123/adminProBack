@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumns extends Migration
+class Users extends Migration
 {
     /**
      * Run the migrations.
@@ -26,9 +26,7 @@ class AddColumns extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('role');
-            $table->dropColumn('age');
-
+            $table->dropColumn('stream');
         });
     }
 }

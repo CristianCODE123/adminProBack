@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class userController extends Controller
 {
@@ -33,22 +34,89 @@ class userController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+        public function userStreaming(){
+            $streamings = DB::table('streamings')
+            ->join('users', 'streamings.user_id', '=', 'users.id')
+            ->select('streamings.*', 'users.*')
+            ->get();
+
+            return $streamings;
+        }
+
+
+     public function streaming(Request $request, $id){
         $validator = Validator::make($request->all(),[
-            'name' => 'required|max:255',
-            'email' => 'required',
-            'password' => 'required'
+            'id' => 'exists',
+            
         ]);
 
         if($validator->fails()){
-            return json_encode(["creado" => "0"]);
+            return json_encode(["error" => "falla"]);
+        }
+
+
+        if(User::where('id',$id)->exists()){
+            $user = User::find($id);
+
+            $user->stream = $request->stream;
+          
+            
+            $user->save();
+            return json_encode(["Actualizado" => "estado cambiado"]);
+        }else{
+            return json_encode(["No actualizado" => "estado no cambiado"]);
+        }
+
+
+     }
+
+     public function getUserByEmail(Request $request){
+        $email = $request->input('email');
+        $user = User::where('email', $email)->first();
+        if ($user) {
+            return response()->json(['user' => $user], 200);
+        } else {
+            return response()->json(['error' => 'Usuario no encontrado'], 404);
+        }
+     }
+    public function store(Request $request)
+    {
+
+        $existingUser = User::where('email', $request->email)->first();
+
+if ($existingUser) {
+    return response()->json([
+        'correo' => false,
+        'message' => 'El correo ya está en uso.'
+    ], 422);
+}
+
+        $validator = Validator::make($request->all(),[
+            'username' => 'required|unique:users,username',
+            'name' => 'required|max:255',
+            'email' => 'required',
+            'password' => 'required'
+        ], [
+            'username.required' => 'El nombre de usuario es obligatorio.',
+            'username.unique' => 'El nombre de usuario ya está en uso.',
+            'name.required' => 'El nombre es obligatorio.',
+            'name.max' => 'El nombre no debe ser mayor a 255 caracteres.',
+            'email.required' => 'El correo electrónico es obligatorio.',
+            'password.required' => 'La contraseña es obligatoria.',
+            'email.unique' => 'El correo electrónico ya está en uso.',
+
+        ]);
+
+        
+        if ($validator->fails()) {
+            return $validator->errors()->toArray();
+            
         }
         $user = new User(request()->all());
         $user->password = bcrypt($user->password);
         $user->save(); 
         return  json_encode(["creado" => "1"]);   
-    
+        
     }
 
     /**

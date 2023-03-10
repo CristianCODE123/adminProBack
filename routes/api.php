@@ -30,6 +30,8 @@ Route::get('/usuario/{id}',function ($id){
 // });
 
 Route::get('/usuario', [userController::class, 'find']);
+Route::get("/usuarioEmail", [userController::class,'getUserByEmail']);
+Route::get('/usuarioStreaming',[userController::class,'userStreaming']);
 
 Route::post('/usuario',[userController::class,'store']);
 Route::put('/usuario/{id}', [userController::class,'update']);
@@ -65,5 +67,11 @@ Route::group([
 ], function ($router) {
     Route::get('get', [notificationController::class, 'get']);
     Route::post('add', [notificationController::class, "add"] );
+});
 
+//stream
+Route::group([
+    'prefix' => 'stream'
+], function ($router) {
+    Route::post('streaming/{id}', [userController::class, 'streaming']);
 });

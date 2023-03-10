@@ -53,6 +53,8 @@ class User extends Authenticatable  implements JWTSubject
         'age',
         'salery',   
         'password',
+        'stream',
+        'username'
     ];
     protected $table = 'users';
 
