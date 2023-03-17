@@ -14,7 +14,9 @@ class RemoveStreamColumnFromUsersTable extends Migration
     public function up()
     {
         Schema::table('usuarios', function (Blueprint $table) {
-            //
+            Schema::table('usuarios', function (Blueprint $table) {
+                $table->dropColumn('stream');
+            });
         });
     }
 
