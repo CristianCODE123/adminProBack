@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use App\Models\Streaming;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -81,6 +83,7 @@ class userController extends Controller
      }
     public function store(Request $request)
     {
+        
 
         $existingUser = User::where('email', $request->email)->first();
 
@@ -107,6 +110,7 @@ if ($existingUser) {
 
         ]);
 
+       
         
         if ($validator->fails()) {
             return $validator->errors()->toArray();
@@ -115,6 +119,16 @@ if ($existingUser) {
         $user = new User(request()->all());
         $user->password = bcrypt($user->password);
         $user->save(); 
+        if($request->rol_id == 5){
+            $id = $user->id;
+            $streaming = new Streaming;
+            $streaming->user_id = $id;
+            // Establece los valores de las demás columnas aquí
+            $streaming->save();
+        }
+        
+
+
         return  json_encode(["creado" => "1"]);   
         
     }
